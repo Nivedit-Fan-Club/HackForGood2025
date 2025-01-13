@@ -46,12 +46,12 @@ jobs:
             }
           }' > .eslintrc.temp.json
 
-      # # Run tests with custom ESLint configuration
-      # - name: Run tests
-      #   run: |
-      #     ESLINT_CONFIG_FILE=.eslintrc.temp.json npm test -- --watchAll=false --coverage
-      #   env:
-      #     CI: true
+      # Run tests with custom ESLint configuration
+      - name: Run tests
+        run: |
+          ESLINT_CONFIG_FILE=.eslintrc.temp.json npm test -- --watchAll=false --coverage
+        env:
+          CI: true
 
       # # Build the project
       # - name: Build project
