@@ -1,25 +1,79 @@
-name: Java CI
+name: React CI
 
+# The workflow will now run on all push events and pull requests
+# We don't specify branches, so it applies to all branches
 on: [push, pull_request]
 
 jobs:
   build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    # Environment variables that apply to all steps in this job
+    env:
+      NODE_ENV: development
+      CI: true
+
     strategy:
       matrix:
-        platform: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.platform }}
+        node-version: [14.x, 16.x]  # Versions compatible with React 17
 
     steps:
-      - name: Set up repository
-        uses: actions/checkout@master
-
-      - name: Set up repository
-        uses: actions/checkout@master
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
-          ref: master
+          # Fetch all history for all branches and tags
+          fetch-depth: 0
 
-      - name: Merge to master
-        run: git checkout --progress --force ${{ github.sha }}
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-      - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1
+      - name: Install dependencies
+        run: npm ci
+        
+      # Run tests for all branches
+      - name: Run tests
+        run: npm test -- --watchAll=false --coverage
+        env:
+          CI: true
+
+      # Build the project for all branches
+      - name: Build project
+        run: npm run build
+        env:
+          CI: true
+
+      # Store build artifacts for all branches
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          # Include branch name in artifact name for distinction
+          name: build-files-${{ github.ref_name }}
+          path: build/
+          retention-days: 5  # Keep artifacts for 5 days
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    # Only run deployment for main/master branches
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          # Match the artifact name from the build job
+          name: build-files-${{ github.ref_name }}
+          path: build
+
+      # Add your deployment steps here
+      # Example for GitHub Pages:
+      # - name: Deploy to GitHub Pages
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: ./build
