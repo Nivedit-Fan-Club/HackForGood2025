@@ -12,7 +12,7 @@ jobs:
     # Environment variables that apply to all steps in this job
     env:
       NODE_ENV: development
-        #CI: true
+        CI: false
 
     strategy:
       matrix:
