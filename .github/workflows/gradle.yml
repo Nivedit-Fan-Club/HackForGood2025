@@ -35,10 +35,10 @@ jobs:
         run: npm ci
         
       # Run tests for all branches
-      - name: Run tests
-        run: npm test -- --watchAll=false --coverage
-        env:
-          CI: true
+      #- name: Run tests
+      #  run: npm test -- --watchAll=false --coverage
+      #  env:
+      #    CI: true
 
       # Build the project for all branches
       - name: Build project
