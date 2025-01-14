@@ -5,7 +5,7 @@ const ScrollableTable = ({ data }) => {
   const headers = data.length > 0 ? Object.keys(data[0]) : [];
 
   return (
-    <div style={{ height: '500px', overflowY: 'auto', border: '1px solid #ccc' }}>
+    <div style={{ height: '400px', overflowY: 'auto', border: '1px solid #ccc' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
