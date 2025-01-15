@@ -1,19 +1,16 @@
 require('dotenv').config();
 const { OAuth2Client } = require('google-auth-library');
-
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 // Vercel serverless function handler
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Set CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  //res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', FRONTEND_URL);
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   // Handle OPTIONS request for CORS
   if (req.method === 'OPTIONS') {
@@ -23,6 +20,9 @@ export default async function handler(req, res) {
 
   // Only allow POST method
   if (req.method !== 'POST') {
+    //console.log(req)
+    console.log("Help me")
+    console.log(req.method)
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
