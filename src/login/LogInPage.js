@@ -2,6 +2,7 @@ import React, { useEffect} from "react";
 import { useHistory } from "react-router-dom";
 
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 function LogInPage() {
   const navigate = useHistory();
@@ -38,7 +39,8 @@ function LogInPage() {
 
   const handleCredentialResponse = async (response) => {
     try {
-      const res = await fetch('/login', {
+      const res = await fetch(BACKEND_URL + '/login', {
+      //const res = await fetch('http://localhost:5000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

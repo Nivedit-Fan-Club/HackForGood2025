@@ -1,18 +1,20 @@
+require('dotenv').config();
 const express = require('express');
 const { OAuth2Client } = require('google-auth-library');
 const app = express();
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 const cors = require('cors');
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: FRONTEND_URL,
   methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type'],
+  allowedHeaders: ['Content-Type']
 };
 
-app.use(express.json());
 app.use(cors(corsOptions));
+app.use(express.json());
 
 app.post('/login', async (req, res) => {
   const { token } = req.body;

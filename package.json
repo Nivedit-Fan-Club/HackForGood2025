@@ -7,6 +7,7 @@
     "bootstrap": "4.6.0",
     "chartist": "0.11.4",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "google-auth-library": "^9.15.0",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.9",
@@ -56,6 +57,5 @@
   "devDependencies": {
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3"
-  },
-  "proxy": "http://localhost:5000"
+  }
 }
