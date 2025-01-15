@@ -29,6 +29,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import AdminLayout from "layouts/Admin.js";
 import LogInPage from "login/LogInPage";
 import NewTask from "components/NewTask";
+import NewMeeting from "components/NewMeeting";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -38,6 +39,7 @@ root.render(
       <Route path ="/login" component={LogInPage}/>
       <Route path="/admin" render={AdminLayout} />
       <Route path ="/newTask" component={NewTask}/>
+      <Route path ="/newMeeting" component={NewMeeting}/>
       <Redirect from="/" to="/login" />
     </Switch>
   </BrowserRouter>
