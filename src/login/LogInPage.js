@@ -36,22 +36,29 @@ function LogInPage() {
     window.google.accounts.id.prompt();
   }, []);
 
-  const handleCredentialResponse = (response) => {
-    console.log("JWT ID Token:", response.credential);
-
-    fetch("/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: response.credential }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          navigate.push("/admin/dashboard");
-        } else {
-          alert("Login failed. Please try again.");
-        }
+  const handleCredentialResponse = async (response) => {
+    try {
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: response.credential }),
       });
+
+      const data = await res.json();
+      console.log("data: ", data)
+
+      if (data.success) {
+        localStorage.setItem('authToken', data.token);
+        navigate.push('/admin/dashboard');
+      } else {
+        alert('Login failed. Please try again.');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      alert('Login failed. Please try again.');
+    }
   };
 
   const handleRedirect = () => {
