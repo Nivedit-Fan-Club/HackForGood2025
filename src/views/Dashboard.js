@@ -27,6 +27,9 @@ function Dashboard() {
   const createNewTask = () => {
     navigate.push("/newTask");
   }
+  const createNewMeeting = () => {
+    navigate.push("/newMeeting");
+  }
 
   const meetingData = [
     {title: 'Library Project Discussion', start: "14:00", end: "15:00", organizer: "Boss"},
@@ -61,7 +64,7 @@ function Dashboard() {
                 </div>
               </Card.Body>
               <Card.Footer>
-                <Button>
+                <Button onClick={()=> createNewMeeting()}>
                   Add New Meeting
                 </Button>
               </Card.Footer>
