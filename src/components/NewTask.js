@@ -81,7 +81,7 @@ function NewTaskPage() {
         <div className="main-panel">
           <AdminNavbar />
           <div className="content">
-            <NewTask/>;
+            <NewTask/>
           </div>
           <Footer />
         </div>
