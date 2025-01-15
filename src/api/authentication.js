@@ -16,7 +16,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
   const { token } = req.body;
 
   try {

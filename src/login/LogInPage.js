@@ -39,8 +39,8 @@ function LogInPage() {
 
   const handleCredentialResponse = async (response) => {
     try {
-      const res = await fetch(BACKEND_URL + '/login', {
-      //const res = await fetch('http://localhost:5000/login', {
+      console.log(BACKEND_URL + '/api/login')
+      const res = await fetch(BACKEND_URL + '/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
