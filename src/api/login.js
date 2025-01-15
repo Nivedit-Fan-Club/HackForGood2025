@@ -6,6 +6,10 @@ const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 // Vercel serverless function handler
 module.exports = async function handler(req, res) {
+  console.log('Request method:', req.method);
+  console.log('Request headers:', req.headers);
+  console.log('Request body:', req.body);
+
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', FRONTEND_URL);
@@ -17,6 +21,8 @@ module.exports = async function handler(req, res) {
     res.status(200).end();
     return;
   }
+  
+  console.log("I hate servers")
 
   // Only allow POST method
   if (req.method !== 'POST') {
