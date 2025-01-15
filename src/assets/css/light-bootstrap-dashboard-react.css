@@ -125,7 +125,10 @@ h1 .subtitle {
 body,
 .wrapper {
   min-height: 100vh;
-  position: relative; }
+  position: relative; 
+  width: 100%;
+  display: block;
+}
 
 a {
   color: #1DC7EA; }
@@ -185,7 +188,9 @@ input:focus {
 .wrapper {
   position: relative;
   top: 0;
-  height: 100vh; }
+  height: 100vh;
+  width: 100%;
+  display: block; }
 
 .page-header .page-header-image {
   background-position: center center;
@@ -222,7 +227,8 @@ input:focus {
 
 .documentation .wrapper {
   margin-top: -61px;
-  height: 100vh; }
+  height: 100vh; 
+}
 
 .documentation .navbar {
   z-index: 21; }
@@ -510,7 +516,7 @@ body > .navbar-collapse {
   background: rgba(203, 203, 210, 0.15);
   position: relative;
   float: right;
-  width: calc(100% - 260px);
+  width: 100%;
   min-height: 100%; }
   .main-panel > .content {
     padding: 30px 15px;
@@ -2895,7 +2901,9 @@ Copyright (c) 2015 Daniel Eden
     position: relative; }
   .wrapper {
     left: 0;
-    background-color: white; }
+    background-color: white; 
+    display: block;
+  }
   .navbar .container {
     left: 15px;
     width: 100%;
