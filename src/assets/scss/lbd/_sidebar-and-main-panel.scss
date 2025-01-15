@@ -17,7 +17,7 @@ body > .navbar-collapse{
         max-height: calc(100vh - 75px);
         min-height: 100%;
         overflow: auto;
-        width: 260px;
+        width: 0px;
         z-index: 4;
         padding-bottom: 100px;
     }
@@ -264,7 +264,7 @@ body > .navbar-collapse{
     background: rgba(203,203,210,.15);
     position: relative;
     float: right;
-    width: $sidebar-width;
+    width: 100%;
     min-height: 100%;
 
     > .content{

@@ -186,14 +186,17 @@ input:focus {
 .wrapper {
   position: relative;
   top: 0;
-  height: 100vh; }
+  height: 100vh; 
+  width: 100%; /* Ensure it takes the full width */
+  display: block;
+}
 
 .sidebar {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
-  width: 260px;
+  width: 0px;
   display: block;
   z-index: 1;
   color: #fff;
@@ -436,8 +439,8 @@ body > .navbar-collapse[data-color="purple"]:after {
 .main-panel {
   background: rgba(203, 203, 210, 0.15);
   position: relative;
-  float: right;
-  width: calc(100% - 260px); }
+  float: left;
+  width: 100%; }
   .main-panel > .content {
     padding: 30px 15px;
     min-height: calc(100% - 123px); }

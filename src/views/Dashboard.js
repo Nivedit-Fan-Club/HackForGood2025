@@ -1,5 +1,7 @@
 import React from "react";
 import ChartistGraph from "react-chartist";
+import { useHistory } from "react-router-dom";
+
 // react-bootstrap components
 import {
   Badge,
@@ -19,7 +21,13 @@ import ScrollableTable from "components/ScrollableTable/ScrollableTable";
 import ScrollableTableWithDone from "components/ScrollableTable/ScrollableTableWithDone";
 
 const email = "https://calendar.google.com/calendar/embed?src=" + encodeURI("limkongkiat768@gmail.com");
-function Dashboard() {
+function Dashboard() { 
+
+  const navigate = useHistory();
+  const createNewTask = () => {
+    navigate.push("/newTask");
+  }
+
   const meetingData = [
     {title: 'Library Project Discussion', start: "14:00", end: "15:00", organizer: "Boss"},
     {title: 'Test 1', start: "16:00", end: "17:00", organizer: "g"},
@@ -52,6 +60,11 @@ function Dashboard() {
                   <ScrollableTable data={meetingData}/>
                 </div>
               </Card.Body>
+              <Card.Footer>
+                <Button>
+                  Add New Meeting
+                </Button>
+              </Card.Footer>
             </Card>
           </Col>
           <Col md="6">
@@ -64,6 +77,12 @@ function Dashboard() {
                   <ScrollableTableWithDone data={taskData}/>
                 </div>
               </Card.Body>
+              <Card.Footer>
+                <Button
+                onClick={() => createNewTask()}>
+                  Add New Task
+                </Button>
+              </Card.Footer>
             </Card>
           </Col>
         </Row>
