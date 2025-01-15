@@ -30,7 +30,7 @@
   "scripts": {
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
     "start:frontend": "react-scripts start",
-    "start:backend": "node src/authentication.js",
+    "start:backend": "node src/api/login.js",
     "build": "cross-env CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
