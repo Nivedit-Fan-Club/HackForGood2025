@@ -1,13 +1,11 @@
 import React, { useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
 
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 function LogInPage() {
   const navigate = useHistory();
-  const { setUser } = useContext(UserContext);
 
   useEffect(() => {
     const token = localStorage.getItem("loginToken")

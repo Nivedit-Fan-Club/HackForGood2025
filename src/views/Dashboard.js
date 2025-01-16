@@ -1,6 +1,7 @@
 import React from "react";
 import ChartistGraph from "react-chartist";
 import { useHistory } from "react-router-dom";
+import GoogleCalendar from "components/Calendar/GoogleCalendar";
 
 // react-bootstrap components
 import {
@@ -89,8 +90,18 @@ function Dashboard() {
             </Card>
           </Col>
         </Row>
+
         <Row>
-          <iframe src={email} width="3000" height="600"/>
+          <Col md="12">
+            <Card className="card-calendar">
+              <Card.Header>
+                <Card.Title as="h4">Google Calendar</Card.Title>
+              </Card.Header>
+              <Card.Body>
+                <GoogleCalendar />
+              </Card.Body>
+            </Card>
+          </Col>
         </Row>
       </Container>
     </>
