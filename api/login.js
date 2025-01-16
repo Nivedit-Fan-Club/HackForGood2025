@@ -40,11 +40,13 @@ module.exports = async function handler(req, res) {
     });
 
     const payload = ticket.getPayload();
-    //const { email, name, picture } = payload;
+    const { email, name, picture } = payload;
+    console.log(email)
 
     res.status(200).json({ 
-      success: true
-      // user: { email, name, picture }
+      success: true,
+      //user: { email, name, picture }
+      user: email
     });
   } catch (error) {
     console.error('Error verifying token:', error);

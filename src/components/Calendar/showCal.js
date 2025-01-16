@@ -1,18 +1,17 @@
 import React, { useContext, useEffect } from 'react';
-import { UserContext } from '../../context/UserContext';
 
 function ShowCal() {
-    const { user } = useContext(UserContext);
+    const userEmail = localStorage.getItem('userEmail')
 
     useEffect(() => {
-        if (user?.email) {
+        if (userEmail) {
             const iframe = document.getElementById('calendarEmbed');
             const blocker = document.getElementById('calendarEmbedBlocker');
 
-            iframe.src = `https://calendar.google.com/calendar/embed?src=${encodeURI(user.email)}`;
+            iframe.src = `https://calendar.google.com/calendar/embed?src=${encodeURI(userEmail)}`;
             blocker.style.display = 'none';
         }
-    }, [user]);
+    }, [userEmail]);
 
     return (
         <div id="calendarEmbedWrapper">

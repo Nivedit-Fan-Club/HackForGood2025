@@ -1,7 +1,7 @@
 import React from "react";
 import ChartistGraph from "react-chartist";
 import { useHistory } from "react-router-dom";
-import GoogleCalendar from "components/Calendar/GoogleCalendar";
+import ShowCal from "components/Calendar/showCal";
 
 // react-bootstrap components
 import {
@@ -21,7 +21,7 @@ import {
 import ScrollableTable from "components/ScrollableTable/ScrollableTable";
 import ScrollableTableWithDone from "components/ScrollableTable/ScrollableTableWithDone";
 
-const email = "https://calendar.google.com/calendar/embed?src=" + encodeURI("limkongkiat768@gmail.com");
+//const email = "https://calendar.google.com/calendar/embed?src=" + encodeURI("limkongkiat768@gmail.com");
 function Dashboard() { 
 
   const navigate = useHistory();
@@ -92,16 +92,7 @@ function Dashboard() {
         </Row>
 
         <Row>
-          <Col md="12">
-            <Card className="card-calendar">
-              <Card.Header>
-                <Card.Title as="h4">Google Calendar</Card.Title>
-              </Card.Header>
-              <Card.Body>
-                <GoogleCalendar />
-              </Card.Body>
-            </Card>
-          </Col>
+          <ShowCal />
         </Row>
       </Container>
     </>
