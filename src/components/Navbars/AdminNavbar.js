@@ -39,7 +39,7 @@ function Header() {
 
   const handleLogout = async () => {
     localStorage.removeItem("loginToken");
-    localStorage.removeitem("userEmail");
+    localStorage.removeItem("userEmail");
     localStorage.removeItem("calendarApiToken");
 
     navigate.push('/login');
