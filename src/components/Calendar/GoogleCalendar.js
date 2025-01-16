@@ -1,89 +1,73 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 
-function GoogleCalender() {
+let tokenClient;
 
-var gapi = window.gapi
- /* 
- Update with your own Client Id and Api key 
- */
-  var CLIENT_ID = ""
- var API_KEY = ""
- var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
-var SCOPES = "https://www.googleapis.com/auth/calendar.events"
-
-const handleClick = () => {
-gapi.load('client:auth2', () => {
-  console.log('loaded client')
-
-  gapi.client.init({
-    apiKey: API_KEY,
-    clientId: CLIENT_ID,
-    discoveryDocs: DISCOVERY_DOCS,
-    scope: SCOPES,
-  })
-
-  gapi.client.load('calendar', 'v3', () => console.log('bam!'))
-
-  gapi.auth2.getAuthInstance().signIn()
-  .then(() => {
-    
-    var event = {
-      'summary': 'Awesome Event!',
-      'location': '800 Howard St., San Francisco, CA 94103',
-      'description': 'Really great refreshments',
-      'start': {
-        'dateTime': '2020-06-28T09:00:00-07:00',
-        'timeZone': 'America/Los_Angeles'
-      },
-      'end': {
-        'dateTime': '2020-06-28T17:00:00-07:00',
-        'timeZone': 'America/Los_Angeles'
-      },
-      'recurrence': [
-        'RRULE:FREQ=DAILY;COUNT=2'
-      ],
-      'attendees': [
-        {'email': 'lpage@example.com'},
-        {'email': 'sbrin@example.com'}
-      ],
-      'reminders': {
-        'useDefault': false,
-        'overrides': [
-          {'method': 'email', 'minutes': 24 * 60},
-          {'method': 'popup', 'minutes': 10}
-        ]
+function initializeTokenClient() {
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: "YOUR_CLIENT_ID.apps.googleusercontent.com",
+    scope: "https://www.googleapis.com/auth/calendar",
+    callback: (response) => {
+      if (response.error) {
+        console.error("Error during token retrieval", response.error);
+        return;
       }
-    }
-
-    var request = gapi.client.calendar.events.insert({
-      'calendarId': 'primary',
-      'resource': event,
-    })
-
-    request.execute(event => {
-      console.log(event)
-      window.open(event.htmlLink)
-    })
-    
-
-   
-
-   })
-   })
- }
-
-
-return (
-<div className="App">
-  <header className="App-header">
-    <img src={logo} className="App-logo" alt="logo" />
-    <p>Click to add event to Google Calendar</p>
-    <p style={{fontSize: 18}}>Uncomment the get events code to get events</p>
-    <p style={{fontSize: 18}}>Don't forget to add your Client Id and Api key</p>
-    <button style={{width: 100, height: 50}} onClick={handleClick}>Add Event</button>
-  </header>
-</div>
-);
+      localStorage.setItem("calendarApiToken", response.access_token);
+      console.log("Calendar API Token:", response.access_token);
+    },
+  });
 }
 
-export default GoogleCalender;  
+function requestCalendarAccess() {
+  tokenClient.requestAccessToken({ prompt: "consent" });
+}
+
+function GoogleCalendar() {
+  useEffect(() => {
+    const fetchCalendarEvents = async () => {
+      const token = localStorage.getItem("calendarApiToken");
+
+      if (!token) {
+        console.error("No token found. Request calendar access first.");
+        return;
+      }
+
+      const response = await fetch(
+        "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Failed to fetch calendar events:", response.statusText);
+        return;
+      }
+
+      const events = await response.json();
+      console.log("Calendar Events:", events);
+    };
+
+  fetchCalendarEvents();
+}, []);
+
+  return (
+    <div>
+      <h2>Google Calendar Events</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <ul>
+        {events.map((event) => (
+          <li key={event.id}>
+            <strong>{event.summary}</strong>
+            <br />
+            {event.start?.dateTime || event.start?.date}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default GoogleCalendar;
+

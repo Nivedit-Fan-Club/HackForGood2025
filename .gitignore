@@ -1,6 +1,9 @@
 package-lock.json
 yarn.lock
 node_modules/
+node_modules
 .eslintcache
 .env
 .env.local
+*.swp
+.vercel

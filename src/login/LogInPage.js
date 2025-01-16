@@ -8,6 +8,15 @@ function LogInPage() {
   const navigate = useHistory();
 
   useEffect(() => {
+    const token = localStorage.getItem("loginToken")
+    if (token) {
+      // Could simply choose to redirect if token still exists
+      // navigate.push("/admin/dashboard");
+      console.log("Still has token, wat?")
+    } else {
+      console.log("No login token found. User is logged out.");
+    }
+
     if (!window.google) {
       console.error('Google API not loaded');
       return;
@@ -38,8 +47,10 @@ function LogInPage() {
   }, []);
 
   const handleCredentialResponse = async (response) => {
+    const loginToken = response.credential;
+
     try {
-      console.log(BACKEND_URL + '/api/login')
+      console.log('Fetching from: ', BACKEND_URL, '/api/login')
       const res = await fetch(BACKEND_URL + '/api/login', {
         method: 'POST',
         headers: {
@@ -47,14 +58,16 @@ function LogInPage() {
         },
         credentials: 'include',
         mode: 'cors',
-        body: JSON.stringify({ token: response.credential }),
+        body: JSON.stringify({ token: loginToken }),
       });
 
       const data = await res.json();
-      console.log("data: ", data)
+      // console.log("data: ", data)
 
       if (data.success) {
-        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('loginToken', loginToken);
+        // localStorage.setItem('userInfo', JSON.stringify(data.user));
+
         navigate.push('/admin/dashboard');
       } else {
         alert('Login failed. Please try again.');
@@ -63,10 +76,6 @@ function LogInPage() {
       console.error('Login error:', err);
       alert('Login failed. Please try again.');
     }
-  };
-
-  const handleRedirect = () => {
-    navigate.push("/admin/dashboard");
   };
 
   return (
