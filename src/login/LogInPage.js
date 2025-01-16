@@ -1,11 +1,13 @@
-import React, { useEffect} from "react";
+import React, { useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 function LogInPage() {
   const navigate = useHistory();
+  const { setUser } = useContext(UserContext);
 
   useEffect(() => {
     if (!window.google) {
@@ -39,7 +41,6 @@ function LogInPage() {
 
   const handleCredentialResponse = async (response) => {
     try {
-      console.log(BACKEND_URL + '/api/login')
       const res = await fetch(BACKEND_URL + '/api/login', {
         method: 'POST',
         headers: {
@@ -51,10 +52,25 @@ function LogInPage() {
       });
 
       const data = await res.json();
-      console.log("data: ", data)
 
       if (data.success) {
+        // Store auth token
         localStorage.setItem('authToken', data.token);
+
+        // Decode JWT to get user info including Google account ID
+        const decodedToken = JSON.parse(atob(data.token.split('.')[1]));
+
+        // Store user data in context and encrypted localStorage
+        const userData = {
+          googleId: decodedToken.googleId,
+          email: decodedToken.email,
+          name: decodedToken.name
+        };
+
+        setUser(userData);
+        const encryptedData = btoa(JSON.stringify(userData));
+        localStorage.setItem('userData', encryptedData);
+
         navigate.push('/admin/dashboard');
       } else {
         alert('Login failed. Please try again.');
@@ -65,18 +81,14 @@ function LogInPage() {
     }
   };
 
-  const handleRedirect = () => {
-    navigate.push("/admin/dashboard");
-  };
-
   return (
     <div style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        textAlign: "center",
-        justifyContent: 'center',
-        marginTop: "25px"
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      textAlign: "center",
+      justifyContent: 'center',
+      marginTop: "25px"
     }}>
       <h1 style={{ marginBottom: "50px" }}>Welcome</h1>
       <div
