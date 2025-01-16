@@ -8,6 +8,15 @@ function LogInPage() {
   const navigate = useHistory();
 
   useEffect(() => {
+    const token = localStorage.getItem("loginToken")
+    if (token) {
+      // Could simply choose to redirect if token still exists
+      // navigate.push("/admin/dashboard");
+      console.log("Still has token, wat?")
+    } else {
+      console.log("No login token found. User is logged out.");
+    }
+
     if (!window.google) {
       console.error('Google API not loaded');
       return;
@@ -41,7 +50,7 @@ function LogInPage() {
     const loginToken = response.credential;
 
     try {
-      console.log(BACKEND_URL + '/api/login')
+      console.log('Fetching from: ', BACKEND_URL, '/api/login')
       const res = await fetch(BACKEND_URL + '/api/login', {
         method: 'POST',
         headers: {
@@ -53,7 +62,7 @@ function LogInPage() {
       });
 
       const data = await res.json();
-      console.log("data: ", data)
+      // console.log("data: ", data)
 
       if (data.success) {
         localStorage.setItem('loginToken', loginToken);

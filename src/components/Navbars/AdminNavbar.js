@@ -21,17 +21,10 @@ import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 
 import routes from "routes/routes.js";
 
-const handleLogout = async () => {
-  const navigate = useHistory();
-
-  localStorage.removeItem("loginToken");
-  //localStorage.removeItem("calendarApiToken");
-
-  navigate.push('/login');
-};
-
 function Header() {
   const location = useLocation();
+  const navigate = useHistory();
+
   const mobileSidebarToggle = (e) => {
     e.preventDefault();
     document.documentElement.classList.toggle("nav-open");
@@ -44,9 +37,17 @@ function Header() {
     document.body.appendChild(node);
   };
 
+  const handleLogout = async () => {
+    localStorage.removeItem("loginToken");
+    //localStorage.removeItem("calendarApiToken");
+
+    navigate.push('/login');
+  };
+
   const getBrandText = () => {
     return "Welcome";
   };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -71,10 +72,10 @@ function Header() {
             <Nav.Item>
               <Nav.Link
                 className="m-0"
-                href="#pablo"
+                href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleLogout;
+                  handleLogout();
                 }}
               >
                 <span className="no-icon">Log out</span>

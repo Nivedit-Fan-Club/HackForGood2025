@@ -15,8 +15,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { Component } from "react";
-import { useLocation, Route, Switch } from "react-router-dom";
+import React, { useEffect, Component } from "react";
+import { useLocation, Route, Switch, useHistory } from "react-router-dom";
 
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
@@ -28,6 +28,16 @@ import sidebarImage from "assets/img/sidebar-3.jpg";
 import Dashboard from "views/Dashboard";
 
 function Admin() {
+  const navigate = useHistory();
+
+  // I think not needed, since I gate access in routing. But to be safe
+  useEffect(() => {
+    const token = localStorage.getItem("loginToken");
+    if (!token) {
+      console.log("No login token found. Redirecting to login page.");
+      navigate.push("/login");
+    }
+  }, [navigate]);
 
   return (
     <>
