@@ -66,7 +66,9 @@ function LogInPage() {
 
       if (data.success) {
         localStorage.setItem('loginToken', loginToken);
-        localStorage.setItem('userData', JSON.stringify(data.user));
+        localStorage.setItem('userEmail', data.user)
+        //console.log(localStorage.getItem('userEmail'))
+        //console.log(data.user)
 
         navigate.push('/admin/dashboard');
       } else {
