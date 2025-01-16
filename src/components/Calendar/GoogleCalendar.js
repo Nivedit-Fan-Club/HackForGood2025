@@ -4,7 +4,7 @@ let tokenClient;
 
 function initializeTokenClient() {
   tokenClient = google.accounts.oauth2.initTokenClient({
-    client_id: "YOUR_CLIENT_ID.apps.googleusercontent.com",
+    client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
     scope: "https://www.googleapis.com/auth/calendar",
     callback: (response) => {
       if (response.error) {
@@ -19,10 +19,17 @@ function initializeTokenClient() {
 
 function requestCalendarAccess() {
   tokenClient.requestAccessToken({ prompt: "consent" });
+  //tokenClient.requestAccessToken({});
 }
 
 function GoogleCalendar() {
+  const [events, setEvents] = useState([]);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
+    initializeTokenClient();
+    //requestCalendarAccess();
+
     const fetchCalendarEvents = async () => {
       const token = localStorage.getItem("calendarApiToken");
 
@@ -54,8 +61,6 @@ function GoogleCalendar() {
 
   return (
     <div>
-      <h2>Google Calendar Events</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
       <ul>
         {events.map((event) => (
           <li key={event.id}>
