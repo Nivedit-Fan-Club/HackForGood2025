@@ -18,56 +18,46 @@ import {
 } from "react-bootstrap";
 
 function NewTask() {
-    const navigate = useHistory();
-    const finishCreateTask = () => {
-        navigate.push("/admin");
-      };
+  const navigate = useHistory();
+  const finishCreateTask = () => {
+    navigate.push("/admin");
+  };
   return (
     <>
       <Container fluid>
-        <Row>
-          <Col md="8">
-            <Card>
-              <Card.Header>
-                <Card.Title as="h4">New Task</Card.Title>
-              </Card.Header>
-              <Card.Body>
-                <Form>
-                  <Row>
-                    <Col className="pr-1" md="5">
-                      <Form.Group>
-                        <label>Task Description</label>
-                        <Form.Control
-                          placeholder="Description"
-                          type="text"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col className="pr-1" md="6">
-                      <Form.Group>
-                        <label>Deadline</label>
-                        <Form.Control
-                          type="text"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Button
-                    className="btn-fill pull-right"
-                    type="submit"
-                    variant="info"
-                    onClick={() => finishCreateTask()}
-                  >
-                    Create Task
-                  </Button>
-                  <div className="clearfix"></div>
-                </Form>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+        <h2 className="mb-4">Create New Task</h2>
+        <Form onSubmit={finishCreateTask}>
+          <Row classname="mb-4">
+            <Col className="pr-1" md="5">
+              <Form.Group>
+                <label>Task Description</label>
+                <Form.Control
+                  placeholder="Description"
+                  type="text"
+                ></Form.Control>
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row classname="mt-4 mb-4">
+            <Col className="pr-1" md="6">
+              <Form.Group>
+                <label>Deadline</label>
+                <Form.Control
+                  type="text"
+                ></Form.Control>
+              </Form.Group>
+            </Col>
+          </Row>
+          
+          <Button
+            className="btn-fill pull-right mt-4"
+            type="submit"
+            variant="info"
+          >
+            Create Task
+          </Button>
+          <div className="clearfix"></div>
+        </Form>
       </Container>
     </>
   );
@@ -81,7 +71,7 @@ function NewTaskPage() {
         <div className="main-panel">
           <AdminNavbar />
           <div className="content">
-            <NewTask/>;
+            <NewTask />
           </div>
           <Footer />
         </div>
