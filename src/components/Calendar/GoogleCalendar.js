@@ -70,4 +70,3 @@ function GoogleCalendar() {
 }
 
 export default GoogleCalendar;
-

@@ -1,11 +1,13 @@
-import React, { useEffect} from "react";
+import React, { useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 function LogInPage() {
   const navigate = useHistory();
+  const { setUser } = useContext(UserContext);
 
   useEffect(() => {
     const token = localStorage.getItem("loginToken")
@@ -66,7 +68,7 @@ function LogInPage() {
 
       if (data.success) {
         localStorage.setItem('loginToken', loginToken);
-        // localStorage.setItem('userInfo', JSON.stringify(data.user));
+        localStorage.setItem('userData', JSON.stringify(data.user));
 
         navigate.push('/admin/dashboard');
       } else {
@@ -80,12 +82,12 @@ function LogInPage() {
 
   return (
     <div style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        textAlign: "center",
-        justifyContent: 'center',
-        marginTop: "25px"
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      textAlign: "center",
+      justifyContent: 'center',
+      marginTop: "25px"
     }}>
       <h1 style={{ marginBottom: "50px" }}>Welcome</h1>
       <div
