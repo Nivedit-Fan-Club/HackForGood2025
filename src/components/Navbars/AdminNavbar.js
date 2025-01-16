@@ -16,11 +16,15 @@
 
 */
 import React, { Component } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
+
+import routes from "routes/routes.js";
 
 function Header() {
   const location = useLocation();
+  const navigate = useHistory();
+
   const mobileSidebarToggle = (e) => {
     e.preventDefault();
     document.documentElement.classList.toggle("nav-open");
@@ -33,9 +37,17 @@ function Header() {
     document.body.appendChild(node);
   };
 
+  const handleLogout = async () => {
+    localStorage.removeItem("loginToken");
+    //localStorage.removeItem("calendarApiToken");
+
+    navigate.push('/login');
+  };
+
   const getBrandText = () => {
     return "Welcome";
   };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -55,19 +67,22 @@ function Header() {
             {getBrandText()}
           </Navbar.Brand>
         </div>
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar bg="light" style={{ borderBottom: "0" }} id="basic-navbar-nav">
           <Nav className="ml-auto" navbar>
             <Nav.Item>
               <Nav.Link
                 className="m-0"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleLogout();
+                }}
               >
                 <span className="no-icon">Log out</span>
               </Nav.Link>
             </Nav.Item>
           </Nav>
-        </Navbar.Collapse>
+        </Navbar>
       </Container>
     </Navbar>
   );

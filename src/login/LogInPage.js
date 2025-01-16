@@ -10,6 +10,15 @@ function LogInPage() {
   const { setUser } = useContext(UserContext);
 
   useEffect(() => {
+    const token = localStorage.getItem("loginToken")
+    if (token) {
+      // Could simply choose to redirect if token still exists
+      // navigate.push("/admin/dashboard");
+      console.log("Still has token, wat?")
+    } else {
+      console.log("No login token found. User is logged out.");
+    }
+
     if (!window.google) {
       console.error('Google API not loaded');
       return;
@@ -40,7 +49,10 @@ function LogInPage() {
   }, []);
 
   const handleCredentialResponse = async (response) => {
+    const loginToken = response.credential;
+
     try {
+      console.log('Fetching from: ', BACKEND_URL, '/api/login')
       const res = await fetch(BACKEND_URL + '/api/login', {
         method: 'POST',
         headers: {
@@ -48,28 +60,15 @@ function LogInPage() {
         },
         credentials: 'include',
         mode: 'cors',
-        body: JSON.stringify({ token: response.credential }),
+        body: JSON.stringify({ token: loginToken }),
       });
 
       const data = await res.json();
+      // console.log("data: ", data)
 
       if (data.success) {
-        // Store auth token
-        localStorage.setItem('authToken', data.token);
-
-        // Decode JWT to get user info including Google account ID
-        const decodedToken = JSON.parse(atob(data.token.split('.')[1]));
-
-        // Store user data in context and encrypted localStorage
-        const userData = {
-          googleId: decodedToken.googleId,
-          email: decodedToken.email,
-          name: decodedToken.name
-        };
-
-        setUser(userData);
-        const encryptedData = btoa(JSON.stringify(userData));
-        localStorage.setItem('userData', encryptedData);
+        localStorage.setItem('loginToken', loginToken);
+        localStorage.setItem('userData', JSON.stringify(data.user));
 
         navigate.push('/admin/dashboard');
       } else {

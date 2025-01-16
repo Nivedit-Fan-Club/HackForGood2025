@@ -38,9 +38,14 @@ module.exports = async function handler(req, res) {
       idToken: token,
       audience: GOOGLE_CLIENT_ID,
     });
+
     const payload = ticket.getPayload();
-    const userId = payload['sub'];
-    res.status(200).json({ success: true, userId });
+    //const { email, name, picture } = payload;
+
+    res.status(200).json({ 
+      success: true
+      // user: { email, name, picture }
+    });
   } catch (error) {
     console.error('Error verifying token:', error);
     res.status(401).json({ success: false, message: 'Authentication failed' });

@@ -1,90 +1,70 @@
-import React, { useContext, useEffect } from 'react';
-import { UserContext } from '../../context/UserContext';
+import React, { useEffect, useState } from "react";
+
+let tokenClient;
+
+function initializeTokenClient() {
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: "YOUR_CLIENT_ID.apps.googleusercontent.com",
+    scope: "https://www.googleapis.com/auth/calendar",
+    callback: (response) => {
+      if (response.error) {
+        console.error("Error during token retrieval", response.error);
+        return;
+      }
+      localStorage.setItem("calendarApiToken", response.access_token);
+      console.log("Calendar API Token:", response.access_token);
+    },
+  });
+}
+
+function requestCalendarAccess() {
+  tokenClient.requestAccessToken({ prompt: "consent" });
+}
 
 function GoogleCalendar() {
-  const { user } = useContext(UserContext);
-  const gapi = window.gapi;
-
-  const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-  const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
-  const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-  const SCOPES = "https://www.googleapis.com/auth/calendar.events";
-
   useEffect(() => {
-    if (user?.googleId) {
-      initializeGapi();
-    }
-  }, [user]);
+    const fetchCalendarEvents = async () => {
+      const token = localStorage.getItem("calendarApiToken");
 
-  const initializeGapi = () => {
-    gapi.load('client:auth2', () => {
-      gapi.client.init({
-        apiKey: API_KEY,
-        clientId: CLIENT_ID,
-        discoveryDocs: DISCOVERY_DOCS,
-        scope: SCOPES,
-      });
-      gapi.client.load('calendar', 'v3');
-    });
-  };
+      if (!token) {
+        console.error("No token found. Request calendar access first.");
+        return;
+      }
 
-  const handleClick = async () => {
-    if (!user?.googleId) {
-      console.error('No Google account ID found');
-      return;
-    }
-
-    try {
-      const authInstance = gapi.auth2.getAuthInstance();
-      await authInstance.signIn();
-
-      const event = {
-        'summary': 'Awesome Event!',
-        'location': '800 Howard St., San Francisco, CA 94103',
-        'description': 'Really great refreshments',
-        'start': {
-          'dateTime': '2020-06-28T09:00:00-07:00',
-          'timeZone': 'America/Los_Angeles'
-        },
-        'end': {
-          'dateTime': '2020-06-28T17:00:00-07:00',
-          'timeZone': 'America/Los_Angeles'
-        },
-        'recurrence': [
-          'RRULE:FREQ=DAILY;COUNT=2'
-        ],
-        'attendees': [
-          { 'email': user.email }
-        ],
-        'reminders': {
-          'useDefault': false,
-          'overrides': [
-            { 'method': 'email', 'minutes': 24 * 60 },
-            { 'method': 'popup', 'minutes': 10 }
-          ]
+      const response = await fetch(
+        "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      };
+      );
 
-      const request = await gapi.client.calendar.events.insert({
-        'calendarId': 'primary',
-        'resource': event,
-      });
+      if (!response.ok) {
+        console.error("Failed to fetch calendar events:", response.statusText);
+        return;
+      }
 
-      window.open(request.result.htmlLink);
-    } catch (error) {
-      console.error('Calendar event creation failed:', error);
-    }
-  };
+      const events = await response.json();
+      console.log("Calendar Events:", events);
+    };
+
+  fetchCalendarEvents();
+}, []);
 
   return (
-    <div className="App">
-      <button
-        style={{ width: 100, height: 50 }}
-        onClick={handleClick}
-        disabled={!user?.googleId}
-      >
-        Add Event
-      </button>
+    <div>
+      <h2>Google Calendar Events</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <ul>
+        {events.map((event) => (
+          <li key={event.id}>
+            <strong>{event.summary}</strong>
+            <br />
+            {event.start?.dateTime || event.start?.date}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
