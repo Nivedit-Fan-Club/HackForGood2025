@@ -56,8 +56,9 @@ function MeetingForm() {
       <h2 className="mb-4">Create New Meeting</h2>
       {error && <Alert variant="danger">{error}</Alert>}
       <Row className="g-0">
-        <Form onSubmit={handleCreateMeeting}>
-          <Col md={6}>
+        <Col md={6}>
+          <Form onSubmit={handleCreateMeeting}>
+            <Row><h4>Meeting Details</h4></Row>
             <Row className="mb-3">
               <Col md={6}>
                 <Form.Group controlId="formMeetingName">
@@ -108,13 +109,10 @@ function MeetingForm() {
                 </Form.Group>
               </Col>
             </Row>
-            <Row>
-            </Row>
-            <Button variant="primary" type="submit">
-              Create Meeting
-            </Button>
-          </Col>
-        </Form>
+            {/* <Row class="mb-5">
+            </Row> */}
+          </Form>
+        </Col>
         <Col md={6}>
           <Form onSubmit={handleSubmit}>
             <Row><h4>Add people to the Meeting</h4></Row>
@@ -144,13 +142,9 @@ function MeetingForm() {
                 </Form.Group>
               </Col>
             </Row>
-            <Button variant="primary" type="submit">
+            <Button variant="secondary" type="submit">
               Add Person
             </Button>
-            {/* <Button
-            onClick={() => finishCreateMeeting()}>
-            Create Meeting
-          </Button> */}
             <h3 className="mt-4">Attendees</h3>
             {attendees.length === 0 ? (
               <p>No attendees added yet.</p>
@@ -165,6 +159,11 @@ function MeetingForm() {
             )}
           </Form>
         </Col>
+      </Row>
+      <Row>
+        <Button variant="primary" size="lg" onClick={handleCreateMeeting}>
+          Create Meeting
+        </Button>
       </Row>
     </Container>
   );
