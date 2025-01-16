@@ -2,7 +2,7 @@
 
 Develop a cost-effective digital PA system for administrators to efficiently arrange and schedule meetings, and automate tasks such as: send follow up tasks to themselves or others (e.g. submission of reports, budgets, forms, meeting agenda), send reminders, generate summaries of email threads, arrange meetings.
 
-Contributors: [cnivedit](https://github.com/cnivedit), [limkongkiat](https://github.com/limkongkiat), [yakultbottle](https://github.com/yakultbottle), [ yijiano](https://github.com/ yijiano), 
+Contributors: [cnivedit](https://github.com/cnivedit), [limkongkiat](https://github.com/limkongkiat), [yakultbottle](https://github.com/yakultbottle), [yijiano](https://github.com/yijiano), 
 
 
 ## Table of Contents
