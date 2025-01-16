@@ -67,7 +67,7 @@ function Header() {
             {getBrandText()}
           </Navbar.Brand>
         </div>
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar bg="light" style={{ borderBottom: "0" }} id="basic-navbar-nav">
           <Nav className="ml-auto" navbar>
             <Nav.Item>
               <Nav.Link
@@ -82,7 +82,7 @@ function Header() {
               </Nav.Link>
             </Nav.Item>
           </Nav>
-        </Navbar.Collapse>
+        </Navbar>
       </Container>
     </Navbar>
   );
