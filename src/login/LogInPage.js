@@ -38,6 +38,8 @@ function LogInPage() {
   }, []);
 
   const handleCredentialResponse = async (response) => {
+    const loginToken = response.credential;
+
     try {
       console.log(BACKEND_URL + '/api/login')
       const res = await fetch(BACKEND_URL + '/api/login', {
@@ -47,14 +49,16 @@ function LogInPage() {
         },
         credentials: 'include',
         mode: 'cors',
-        body: JSON.stringify({ token: response.credential }),
+        body: JSON.stringify({ token: loginToken }),
       });
 
       const data = await res.json();
       console.log("data: ", data)
 
       if (data.success) {
-        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('loginToken', loginToken);
+        // localStorage.setItem('userInfo', JSON.stringify(data.user));
+
         navigate.push('/admin/dashboard');
       } else {
         alert('Login failed. Please try again.');
@@ -63,10 +67,6 @@ function LogInPage() {
       console.error('Login error:', err);
       alert('Login failed. Please try again.');
     }
-  };
-
-  const handleRedirect = () => {
-    navigate.push("/admin/dashboard");
   };
 
   return (

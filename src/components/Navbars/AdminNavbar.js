@@ -16,10 +16,19 @@
 
 */
 import React, { Component } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 
-import routes from "routes.js";
+import routes from "routes/routes.js";
+
+const handleLogout = async () => {
+  const navigate = useHistory();
+
+  localStorage.removeItem("loginToken");
+  //localStorage.removeItem("calendarApiToken");
+
+  navigate.push('/login');
+};
 
 function Header() {
   const location = useLocation();
@@ -63,7 +72,10 @@ function Header() {
               <Nav.Link
                 className="m-0"
                 href="#pablo"
-                onClick={(e) => e.preventDefault()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleLogout;
+                }}
               >
                 <span className="no-icon">Log out</span>
               </Nav.Link>
